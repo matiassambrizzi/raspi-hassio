@@ -33,3 +33,9 @@ services:
       - /home/pi/mosquitto/data:/mosquitto/data
       - /home/pi/mosquitto/log:/mosquitto/log
 
+  signal-cli-rest-api:
+    image: bbernhard/signal-cli-rest-api:latest
+    ports:
+      - 8080:8080
+    volumes:
+    - /home/pi/signal:/home/.local/share/signal-cli
