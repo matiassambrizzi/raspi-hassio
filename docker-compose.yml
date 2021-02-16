@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/raspberrypi4-homeassistant:stable
+    volumes:
+      - /home/pi/hassio/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    network_mode: host
+
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    restart: always
+    ports:
+      - 9000:9000
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/pi/portainer:/data:rw
+
+  mosquittoBroker:
+    container_name: mosquitto
+    image: eclipse-mosquitto 
+    ports:
+      - 1883:1883
+    volumes:
+      - /home/pi/mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /home/pi/mosquitto/config/mosquitto.passwd:/mosquitto/config/mosquitto.passwd
+      - /home/pi/mosquitto/data:/mosquitto/data
+      - /home/pi/mosquitto/log:/mosquitto/log
+
