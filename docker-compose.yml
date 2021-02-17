@@ -39,3 +39,25 @@ services:
       - 8080:8080
     volumes:
     - /home/pi/signal:/home/.local/share/signal-cli
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+      - 8081:80/tcp
+      - 4443:443/tcp
+    environment:
+      TZ: 'America/Chicago'
+      #WEBPASSWORD: 'supersecurepassword'
+    volumes:
+      - /home/pi/pihole/etc-pihole/:/etc/pihole/
+      - /home/pi/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/
+    cap_add:
+      - NET_ADMIN
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    restart: unless-stopped
